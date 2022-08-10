@@ -5,7 +5,7 @@ __pycache__/
 
 analyze.py
 ignore-me/
-
+.gitignore
 .DS_Store
 
 # Environments

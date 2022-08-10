@@ -2,7 +2,7 @@ Analyzing poker game play from game log (WIP)
 ---
 [VIEW NOTEBOOK]
 
-Screenshot: game log -> table/charts
+![Pot sizes](./resources/img1-potsize.png)
 
 
 Intro/Motivation
@@ -17,7 +17,7 @@ Summary results (click to see full notebook)
 ---
 
 
-[Chart 1]
+![Gross wins](./resources/img2-gross-win.png)
 
 Play style
 Summarised stats and comments
