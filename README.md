@@ -1,9 +1,6 @@
 Analyzing poker game play from game log (WIP)
 ---
-[VIEW NOTEBOOK]
-
-![Pot sizes](./resources/img1-potsize.png)
-
+[See full notebook on nbviewer](https://nbviewer.org/github/dobeok/analyze-pokernow-games/blob/main/analyze.ipynb)
 
 Intro/Motivation
 ---
@@ -13,13 +10,19 @@ During the lockdown, my friend group couldn't meet face to face and play board g
 Since the raw log file is quite unstructured, I spent most of the time cleaning the data. I primarily used pandas together with SQL.
 
 
-Summary results (click to see full notebook)
+Preview
 ---
+<p align="center">
 
+![Pot sizes](./resources/img1-potsize.png)
 
-![Gross wins](./resources/img2-gross-win.png)
+![Position](./resources/img3-position-win.png)
 
-Play style
+![Player](./resources/img4-player-overview.png)
+
+</p>
+
+**Play style**
 Summarised stats and comments
 - Common characteristics of a good players:
     - Aggressive
