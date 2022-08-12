@@ -1,4 +1,4 @@
-Analyzing poker game play from game log (WIP)
+Analyzing poker game play from game log
 ---
 [See full notebook on nbviewer](https://nbviewer.org/github/dobeok/analyze-pokernow-games/blob/main/analyze.ipynb)
 
@@ -16,7 +16,7 @@ Preview
 |-------------------------|
 |<p align="center"><img src="./resources/flop-dist.png"></p>|
 
-**Chi-squared test for randomess of cards**
+**Chi-squared goodness-of-fit test for randomess of cards**
 | card   | freq   | expected_freq   | O - E   | (O - E)^2   | (O - E)^2 / E   |
 |:-------|:-------|:----------------|:--------|:------------|:----------------|
 | A♥     | 253    | 250.788         | 2.212   | 4.891       | 0.020           |
@@ -33,11 +33,13 @@ Preview
 
         alpha = 0.05
         degrees of freedom = 52 - 1 = 51
+
+        calculated chi-squared statistics = 64.21
         critial chi-squared value = 68.67
 
-    Calculated chi-squared statistics < critical value
+* Calculated chi-squared statistics < critical value
     - We do not reject our null hypothesis
-    - The discrepancies are still due to random fluctuation!
+    - The cards discrepancies are still due to random chances
 
 |Gameplay analysis|
 |-------------------------|
@@ -55,7 +57,7 @@ Preview
 
 TODO
 ---
-- [ ] Analyze if the cards show up at expected frequencies
+- [x] Analyze if the cards show up at expected frequencies
 - [ ] Analyze change in %VPIP and other metrics as the game progressed (reference: https://pokercopilot.com/poker-statistics/vpip-pfr)
 - [ ] Create front-end for drag-and-drop UI for easy sharing
 
