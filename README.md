@@ -12,18 +12,22 @@ Since the raw log file is quite unstructured, I spent most of the time cleaning 
 
 Preview
 ---
+|Game setup analysis|
+|-------------------------|
+|<p align="center"><img src="./resources/flop-dist.png"></p>|
 
-|Sample chart|
+
+|Gameplay analysis|
 |-------------------------|
 |<p align="center"><img height="300" src="./resources/img1-potsize.png"></p>|
 |<p align="center"><img src="./resources/img3-position-win.png"></p>|
 |<p align="center"><img src="./resources/img4-player-overview.png"></p>|
 
-**Play style**
-Summarised stats and comments
+**Observations**
+
 - Common characteristics of a good players:
-    - Aggressive
-    - Play fewer hands
+    - Aggressive (raise more than limp)
+    - Play fewer hands (lower VPIP)
     - Utilize their positions (play & win more hands in position)
 
 
