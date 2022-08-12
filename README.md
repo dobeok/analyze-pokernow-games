@@ -28,18 +28,18 @@ Preview
 | 2♠     | 270    | 250.788         | 19.212  | 369.083     | 1.472           |
 | Chi-squared statistics | | || |64.21|
 
-* H0: Null hypothesis: cards are dealt randomly
-* HA: Alternative hypothesis: cards are not dealt randomly
+    - H0: Null hypothesis: cards are dealt randomly
+    - HA: Alternative hypothesis: cards are not dealt randomly
 
         alpha = 0.05
         degrees of freedom = 52 - 1 = 51
 
         calculated chi-squared statistics = 64.21
-        critial chi-squared value = 68.67
+        critial chi-squared value at given alpha and dof= 68.67
 
-* Calculated chi-squared statistics < critical value
+    - Calculated chi-squared statistics < critical value
     - We do not reject our null hypothesis
-    - The cards discrepancies are still due to random chances
+    - The cards discrepancies are due to random chances
 
 |Gameplay analysis|
 |-------------------------|
