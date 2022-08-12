@@ -12,15 +12,12 @@ Since the raw log file is quite unstructured, I spent most of the time cleaning 
 
 Preview
 ---
-<p align="center">
 
-![Pot sizes](./resources/img1-potsize.png)
-
-![Position](./resources/img3-position-win.png)
-
-![Player](./resources/img4-player-overview.png)
-
-</p>
+|Sample chart|
+|-------------------------|
+|<p align="center"><img height="300" src="./resources/img1-potsize.png"></p>|
+|<p align="center"><img src="./resources/img3-position-win.png"></p>|
+|<p align="center"><img src="./resources/img4-player-overview.png"></p>|
 
 **Play style**
 Summarised stats and comments
