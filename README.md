@@ -4,7 +4,7 @@ Analyzing poker game play from game log (WIP)
 
 Intro/Motivation
 ---
-During the lockdown, my friend group couldn't meet face to face and play board games together. We found some online options for our casual games. One unintended consequence is that after the game sessions, I can get the game logs and analyze it! I wanted to find out what the winning players are doing differently, and hopefully improve my game.
+During the lockdown, my friend group couldn't meet face to face and play board games together. We found some online alternatives for our casual games (thanks to [pokernow.club](https://www.pokernow.club/)). One unintended consequence is that after the game sessions, I can download the game logs and analyze it! I wanted to find out what the winning players are doing differently, and hopefully improve my game.
 
 
 Since the raw log file is quite unstructured, I spent most of the time cleaning the data. I primarily used pandas together with SQL.

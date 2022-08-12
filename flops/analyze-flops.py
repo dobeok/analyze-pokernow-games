@@ -105,4 +105,5 @@ avg_label = ax.annotate(
     ha='left', va='center'
     )
 avg_label.remove()
-fig.savefig('')
+
+fig.savefig('../resources/flop-dist.png', bbox_inches='tight')
