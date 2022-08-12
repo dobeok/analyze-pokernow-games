@@ -107,3 +107,32 @@ avg_label = ax.annotate(
 avg_label.remove()
 
 fig.savefig('../resources/flop-dist.png', bbox_inches='tight')
+
+
+# let's do a chi-squared test
+cc['expected_freq'] = 1/52 * cc['freq'].sum()
+cc['O - E'] = cc['freq'] - cc['expected_freq']
+cc['(O - E)^2'] = cc['O - E'] * cc['O - E']
+cc['(O - E)^2 / E'] = cc['(O - E)^2'] / cc['expected_freq']
+chi_squared = cc['(O - E)^2 / E'].sum()
+
+"""
+null hypothesis: cards are dealt randomly
+alternative hypothesis: cards are not dealt randomly
+
+>>> chi_squared = cc['(O - E)^2 / E'].sum()
+>>> chi_squared
+>>> 64.20818955601564
+
+>>> alpha = 0.05
+>>> d_o_f = len(cc) - 1
+>>> d_o_f
+>>> 51
+
+critical value at alpha = 0.05 and 51 degress of freedom = 68.66929391
+our chi_squared statistics = 64.20818955601564
+
+chi_squared < critical value
+we do not reject our null hypothesis
+the discrepancies are still due to random fluctuation!
+"""
