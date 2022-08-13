@@ -1,6 +1,6 @@
 import pandas as pd
 
-file_name = "2021-11-13 raw log.csv"
+file_name = "raw_data.csv"
 df = pd.read_csv(f'./data/raw/{file_name}')
 df = df.drop('order', axis=1)
 
