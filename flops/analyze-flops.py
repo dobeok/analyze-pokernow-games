@@ -104,7 +104,7 @@ avg_label = ax.annotate(
     arrowprops=dict(arrowstyle= '->', color='k', lw=2),
     ha='left', va='center'
     )
-avg_label.remove()
+# avg_label.remove()
 
 fig.savefig('../resources/flop-dist.png', bbox_inches='tight')
 

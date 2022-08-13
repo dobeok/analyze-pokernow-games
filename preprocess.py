@@ -12,7 +12,7 @@ df = df.drop(df.loc[df['entry'].str.startswith('Your hand is')].index)
 # PREPROCESS DATA
 # ---------------------------------------------------------------------------------------
 # reverse file because original log file is latest first
-df = df.iloc[::-1].reset_index().drop('index', axis=1)
+df = df.reset_index().drop('index', axis=1)
 df['at'] = pd.to_datetime(df['at'])
 
 
@@ -21,11 +21,21 @@ df['num_@'] = df['entry'].str.count('@')
 df['player_name'] = df.loc[df['num_@']==1]['entry'].str.extract('(".*")')
 df['player_name'] = df['player_name'].fillna('""').str[1:].str[:-1]
 
+# TODO: clean up player names
+df['player_id'] = df['player_name'].str[-10:]
+df['player_name'] = df['player_id']
+df = df.drop('player_id', axis=1)
+
+
+
+
 # find hand number
 df['hand_num'] = None
 df['hand_num'] = df['entry'].str.extract('-- starting hand #(\d{1,3})')
 df['hand_num'] = df['hand_num'].ffill()
 
+df['hand_id'] = df['session_date'] + '(' + df['hand_num'].astype(str) + ')'
+# df['hand_id'] = df['hand_id'].ffill()
 
 # identify event
 df['phase'] = None
@@ -51,8 +61,8 @@ df.loc[df['entry'].str.contains('collected'), 'action'] = 'Won'
 df['num_players'] = None
 df['num_players'] = df.loc[df['entry'].str.startswith('Player stacks')]['entry'].str.count('@ [A-Za-z0-9\-]{10}"')
 df.loc[df['action']=='Folds', 'num_players'] = -1
-df['num_players'] = df.groupby('hand_num')['num_players'].cumsum()
-df['num_players'] = df.groupby('hand_num')['num_players'].ffill()
+df['num_players'] = df.groupby('hand_id')['num_players'].cumsum()
+df['num_players'] = df.groupby('hand_id')['num_players'].ffill()
 
 
 # RANK ACTION TO CALCULATE METRICS
@@ -65,13 +75,13 @@ cond = (df['player_name'].notnull()) & (df['action'].notnull())
 # all ranking are grouped by hand and phase
 # rank-R1: ranking for that hand's actions (all players)
 # (A) rank among all players
-df['rank-A1'] = df.loc[cond].groupby(['hand_num', 'phase'])['at'].rank()
-df['rank-A2'] = df.loc[cond].groupby(['hand_num', 'phase', 'action'])['at'].rank()
+df['rank-A1'] = df.loc[cond].groupby(['hand_id', 'phase'])['at'].rank()
+df['rank-A2'] = df.loc[cond].groupby(['hand_id', 'phase', 'action'])['at'].rank()
 
 # rank within each individual
-df['rank-P0'] = df.loc[cond].groupby(['hand_num', 'phase','player_name'])['at'].rank() # to find position
-df['rank-P1'] = df.loc[cond].groupby(['hand_num', 'phase','player_name', 'action'])['at'].rank() # to find their first action
-df['rank-P2'] = df.loc[cond & (~df['action'].isin(['Dealer', 'big blind', 'small blind']))].groupby(['hand_num', 'phase','player_name', 'action'])['at'].rank() # to find their 1st action, exld involuntary
+df['rank-P0'] = df.loc[cond].groupby(['hand_id', 'phase','player_name'])['at'].rank() # to find position
+df['rank-P1'] = df.loc[cond].groupby(['hand_id', 'phase','player_name', 'action'])['at'].rank() # to find their first action
+df['rank-P2'] = df.loc[cond & (~df['action'].isin(['Dealer', 'big blind', 'small blind']))].groupby(['hand_id', 'phase','player_name', 'action'])['at'].rank() # to find their 1st action, exld involuntary
 
 
 # DETERMINE POSITION
@@ -82,7 +92,7 @@ df.loc[df['action']=='Dealer', 'position_tag'] = 'Dealer'
 df.loc[df['position']<1/3, 'position_tag'] = 'EP'
 df.loc[(1/3 <= df['position']) & (df['position']<2/3), 'position_tag'] = 'MP'
 df.loc[2/3 <= df['position'], 'position_tag'] = 'LP'
-df['position_tag'] = df.groupby(['hand_num', 'player_name'])['position_tag'].ffill()
+df['position_tag'] = df.groupby(['hand_id', 'player_name'])['position_tag'].ffill()
 df = df.drop('position', axis=1)
 
 # CALCULATE TIME LAG TO DETERMINE LONG ACTIONS
@@ -94,16 +104,16 @@ df.loc[df['action']!='Dealer', 'time_elapsed'] = df['at'].diff(1) / pd.Timedelta
 # Calculate pot value
 # extract numerical values from entry
 df['_amount'] = None
-df['_amount'] = df.loc[df['hand_num'].notnull()]['entry'].str.extract('(\d{1,3}\.\d{2})')
+df['_amount'] = df.loc[df['hand_id'].notnull()]['entry'].str.extract('(\d{1,3}\.\d{2})')
 df['_amount'] = pd.to_numeric(df['_amount'])
 
 # deduce the amount of money put in by each
 df['put_in'] = None
-df['put_in'] = df.loc[(df['action']!='Won') & (df['action'].notnull())].groupby(['hand_num', 'phase', 'player_name'])['_amount'].diff(1)
+df['put_in'] = df.loc[(df['action']!='Won') & (df['action'].notnull())].groupby(['hand_id', 'phase', 'player_name'])['_amount'].diff(1)
 df.loc[df['entry'].str.startswith('Uncalled bet of'), 'put_in'] = -df['_amount']
-df.loc[(df['hand_num'].notnull()) & (df['phase'].notnull()) & (df['player_name'].notnull()) & (df['put_in'].isnull() & (df['action'].notnull()) & (df['action']!='Won')), 'put_in'] = df['_amount']
-df['pot_size'] = df.groupby(['hand_num'])['put_in'].cumsum()
+df.loc[(df['hand_id'].notnull()) & (df['phase'].notnull()) & (df['player_name'].notnull()) & (df['put_in'].isnull() & (df['action'].notnull()) & (df['action']!='Won')), 'put_in'] = df['_amount']
+df['pot_size'] = df.groupby(['hand_id'])['put_in'].cumsum()
 
 if __name__ == '__main__':
-    df.to_csv(f'./data/processed/p-{file_name}')
+    df.to_csv(f'./data/processed/p-{file_name}', index=False)
     print(f'Exported file to ./data/processed/p-{file_name}')

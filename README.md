@@ -44,8 +44,9 @@ Preview
 |Gameplay analysis|
 |-------------------------|
 |<p align="center"><img height="300" src="./resources/img1-potsize.png"></p>|
-|<p align="center"><img src="./resources/img3-position-win.png"></p>|
 |<p align="center"><img src="./resources/img4-player-overview.png"></p>|
+|<p align="center"><img src="./resources/img5-vpip-reg.png"></p>|
+|<p align="center"><img src="./resources/img6-pfr-reg.png"></p>|
 
 **Observations**
 
