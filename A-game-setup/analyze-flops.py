@@ -2,6 +2,8 @@ from collections import Counter
 import pandas as pd
 import glob
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+
 plt.style.use('fivethirtyeight')
 
 def card_sorter(card_str, by='rank'):
@@ -80,30 +82,42 @@ cc = cc.sort_values(by='_value', ascending=False)
 cc['freq %'] = (cc['freq'] / cc['freq'].sum()).round(5)
 
 
-cc.head()
-
 # plot
 fig, axes = plt.subplots(1, 4, figsize=(12, 4), sharey=True)
 
+# init blank plot to align y-axis label
 axes[0].barh(
     y=cc.iloc[:13]['rank'],
     width=0,
 )
+suit_names = ['spade', 'diamond', 'club', 'heart']
+suits = ['♠', '♦', '♣', '♥']
+# colors = ['#8b8b8b', '#8b8b8b', '#8b8b8b', '#8b8b8b']
+colors = ['#8b8b8b', '#0f8ed3', '#6e9052', '#fb553b']
 
-
-for ax, suit, color in zip(axes, ['♠', '♦', '♣', '♥'], ['#8b8b8b', '#0f8ed3', '#6e9052', '#fb553b']):
+for ax, suit, suit_name, color in zip(axes, suits, suit_names, colors):
     ax.barh(
         y=cc[cc['suit']==suit]['rank'],
         width=cc[cc['suit']==suit]['freq %'],
         height=1,
         ec='white',
-        fc=color,
+        # fc='#8b8b8b',
+        fc=color
+        # alpha=.75
     )
-    ax.set_title(suit)
-    avg_line = ax.axvline(x=1/52, ls='--', c='k', lw=2)
+    ax.set_title(suit_name, size=10, loc='left')
+    ax.set_xlim(0, .025)
+    ax.set_ylim(-.5, 12.5)
+    labels = ax.get_xticks().tolist()
+    labels = [0] + [100*_ for _ in labels[1:]]
+    ax.set_xticklabels(labels)
+    ax.text(.008, 5, suit, size=99, color='white', ha='center', va='center', alpha=.35)
+    avg_line = ax.axvline(x=1/52, ls=':', c='k', lw=2)
 
-fig.suptitle('Observed frequency for flopped cards')
+fig.suptitle('Observed frequency for flopped cards (unit: %)', y=1.05)
 
+legend_elements = [Line2D([0], [0], color='k', ls=':', lw=2, label='Expected frequency')]
+axes[0].legend(handles=legend_elements, loc='upper center', bbox_to_anchor=(2.5, -0.1))
 
 # avg_label = ax.annotate(
 #     text='Expected\nfrequency',
@@ -113,8 +127,8 @@ fig.suptitle('Observed frequency for flopped cards')
 #     ha='left', va='center'
 #     )
 # avg_label.remove()
-
 fig.savefig('../resources/flop-dist.png', bbox_inches='tight')
+
 
 # let's do a chi-squared test
 cc['expected_freq'] = 1/52 * cc['freq'].sum()
