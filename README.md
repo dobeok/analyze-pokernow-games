@@ -4,6 +4,7 @@ Analyzing poker game play
 
 Repo structure
 ---
+```
 .
 ├── A-game-setup: analyze game set up (card frequency, hand distribution)
 ├── B-game-play: analyze players' patterns
@@ -11,7 +12,7 @@ Repo structure
 ├── data: raw log files and cleaned data
 ├── requirements.txt
 └── resources
-
+```
 Intro/Motivation
 ---
 During the lockdown, my friend group couldn't meet face to face and play board games together. We found some online alternatives for our casual games (thanks to [pokernow.club](https://www.pokernow.club/)). One unintended consequence is that after the game sessions, I can download the game logs and analyze it! I wanted to find out what the winning players are doing differently, and hopefully improve my game.
