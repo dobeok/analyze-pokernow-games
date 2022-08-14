@@ -1,6 +1,16 @@
-Analyzing poker game play from game log
+Analyzing poker game play
 ---
 [See full notebook on nbviewer](https://nbviewer.org/github/dobeok/analyze-pokernow-games/blob/main/analyze.ipynb)
+
+Repo structure
+---
+.
+├── A-game-setup: analyze game set up (card frequency, hand distribution)
+├── B-game-play: analyze players' patterns
+├── README.md
+├── data: raw log files and cleaned data
+├── requirements.txt
+└── resources
 
 Intro/Motivation
 ---
@@ -12,6 +22,8 @@ Since the raw log file is quite unstructured, I spent most of the time cleaning 
 
 Preview
 ---
+#### [A] Game setup
+
 |Game setup analysis|
 |-------------------------|
 |<p align="center"><img src="./resources/flop-dist.png"></p>|
@@ -40,6 +52,8 @@ Preview
 - Calculated chi-squared statistics 64.21 < critical value 68.67
 - We do not reject our null hypothesis
 - The cards's observed distribution are due to random chances
+
+#### [B] Game play
 
 |Gameplay analysis|
 |-------------------------|

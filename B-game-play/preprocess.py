@@ -1,7 +1,7 @@
 import pandas as pd
 
 file_name = "raw_data.csv"
-df = pd.read_csv(f'./data/raw/{file_name}')
+df = pd.read_csv(f'../data/raw/{file_name}')
 df = df.drop('order', axis=1)
 
 # remove sensitive data
@@ -115,5 +115,5 @@ df.loc[(df['hand_id'].notnull()) & (df['phase'].notnull()) & (df['player_name'].
 df['pot_size'] = df.groupby(['hand_id'])['put_in'].cumsum()
 
 if __name__ == '__main__':
-    df.to_csv(f'./data/processed/p-{file_name}', index=False)
-    print(f'Exported file to ./data/processed/p-{file_name}')
+    df.to_csv(f'../data/processed/p-{file_name}', index=False)
+    print(f'Exported file to ../data/processed/p-{file_name}')
