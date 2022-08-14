@@ -47,7 +47,7 @@ def card_sorter(card_str, by='rank'):
 
 
 file_names = glob.glob('../data/processed/flop/*.csv')
-dataframes = (pd.read_csv(file, header=None, names=['flop', 'time', 'order']) for file in file_names)
+dataframes = (pd.read_csv(file, header=None, names=['flop', 'time', 'order', 'session_date']) for file in file_names)
 
 df = pd.concat(dataframes)
 df = df.reset_index(drop=True)
@@ -71,6 +71,8 @@ card_count = Counter(all_flops)
 cc = pd.DataFrame.from_dict(dict(card_count), orient='index')
 cc = cc.reset_index()
 cc = cc.rename(columns={'index': 'card', 0: 'freq'})
+
+cc['rank'] = cc['card'].str[:-1]
 cc['suit'] = cc['card'].str[-1]
 cc['_value'] = cc['card'].apply(card_sorter, by='suit')
 
@@ -78,36 +80,41 @@ cc = cc.sort_values(by='_value', ascending=False)
 cc['freq %'] = (cc['freq'] / cc['freq'].sum()).round(5)
 
 
+cc.head()
+
 # plot
-fig, ax = plt.subplots(figsize=(10, 13))
-ax.clear()
-ax.barh(
-    y=cc['card'],
+fig, axes = plt.subplots(1, 4, figsize=(12, 4), sharey=True)
+
+axes[0].barh(
+    y=cc.iloc[:13]['rank'],
     width=0,
 )
-ax.set_title('Observed frequency for flopped cards')
 
-for suit, color in zip(['♠', '♦', '♣', '♥'], ['#8b8b8b', '#0f8ed3', '#6e9052', '#fb553b']):
+
+for ax, suit, color in zip(axes, ['♠', '♦', '♣', '♥'], ['#8b8b8b', '#0f8ed3', '#6e9052', '#fb553b']):
     ax.barh(
-        y=cc[cc['suit']==suit]['card'],
+        y=cc[cc['suit']==suit]['rank'],
         width=cc[cc['suit']==suit]['freq %'],
         height=1,
         ec='white',
         fc=color,
     )
+    ax.set_title(suit)
+    avg_line = ax.axvline(x=1/52, ls='--', c='k', lw=2)
 
-avg_line = ax.axvline(x=1/52, ls='--', c='k', lw=2)
-avg_label = ax.annotate(
-    text='Expected\nfrequency',
-    xy=(1/52, 18),
-    xytext=(1/52*1.05, 20),
-    arrowprops=dict(arrowstyle= '->', color='k', lw=2),
-    ha='left', va='center'
-    )
+fig.suptitle('Observed frequency for flopped cards')
+
+
+# avg_label = ax.annotate(
+#     text='Expected\nfrequency',
+#     xy=(1/52, 18),
+#     xytext=(1/52*1.05, 20),
+#     arrowprops=dict(arrowstyle= '->', color='k', lw=2),
+#     ha='left', va='center'
+#     )
 # avg_label.remove()
 
 fig.savefig('../resources/flop-dist.png', bbox_inches='tight')
-
 
 # let's do a chi-squared test
 cc['expected_freq'] = 1/52 * cc['freq'].sum()
