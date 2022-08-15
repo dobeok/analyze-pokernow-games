@@ -115,5 +115,5 @@ df.loc[(df['hand_id'].notnull()) & (df['phase'].notnull()) & (df['player_name'].
 df['pot_size'] = df.groupby(['hand_id'])['put_in'].cumsum()
 
 if __name__ == '__main__':
-    df.to_csv(f'../data/processed/p-{file_name}', index=False)
+    df.drop('entry', axis=1).to_csv(f'../data/processed/p-{file_name}', index=False)
     print(f'Exported file to ../data/processed/p-{file_name}')
