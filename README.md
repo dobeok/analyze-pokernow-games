@@ -1,6 +1,6 @@
 Analyzing poker game play
 ---
-[See full notebook on nbviewer](https://nbviewer.org/github/dobeok/analyze-pokernow-games/blob/main/analyze.ipynb)
+[See full notebook on nbviewer](https://nbviewer.org/github/dobeok/analyze-pokernow-games/blob/main/B-game-play/analyze.ipynb)
 
 Repo structure
 ---
@@ -30,29 +30,10 @@ Preview
 |<p align="center"><img src="./resources/flop-dist.png"></p>|
 
 **Chi-squared goodness-of-fit test for randomess of cards**
-| card   | observed freq (O)   | expected_freq (E)   | O - E   | (O - E)^2   | (O - E)^2 / E   |
-|:------:|:------:|:---------------:|:-------:|:-----------:|:---------------:|
-| A♥     | 253    | 250.788         | 2.212   | 4.891       | 0.020           |
-| K♥     | 268    | 250.788         | 17.212  | 296.237     | 1.181           |
-| Q♥     | 233    | 250.788         | -17.788 | 316.429     | 1.262           |
-| ...    | ...    | ...             | ...     | ...         | ...             |
-| 4♠     | 244    | 250.788         | -6.788  | 46.083      | 0.184           |
-| 3♠     | 233    | 250.788         | -17.788 | 316.429     | 1.262           |
-| 2♠     | 270    | 250.788         | 19.212  | 369.083     | 1.472           |
-|| | || | Chi-squared statistics = 64.21|
+|Test|chi2 statistics|p-value|Decision
+|:-:|:-:|:-:|:-:|
+|H0: cards are randomly dealt<br>H1: cards are not randomly dealt|64.21|0.10|Do not reject Null hypothesis.<br>Insufficient evident to conclude that cards dealt are not random|
 
-* H0: Null hypothesis: cards are dealt randomly
-* HA: Alternative hypothesis: cards are not dealt randomly
-
-        alpha = 0.05
-        degrees of freedom = 52 - 1 = 51
-
-        calculated chi-squared statistics = 64.21
-        critial chi-squared value at given alpha and dof = 68.67
-
-- Calculated chi-squared statistics 64.21 < critical value 68.67
-- We do not reject our null hypothesis
-- The cards's observed distribution are due to random chances
 
 #### [B] Game play
 

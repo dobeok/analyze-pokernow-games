@@ -3,6 +3,7 @@ import pandas as pd
 import glob
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from scipy.stats import chisquare
 
 plt.style.use('fivethirtyeight')
 
@@ -119,41 +120,26 @@ fig.suptitle('Observed frequency for flopped cards (unit: %)', y=1.05)
 legend_elements = [Line2D([0], [0], color='k', ls=':', lw=2, label='Expected frequency')]
 axes[0].legend(handles=legend_elements, loc='upper center', bbox_to_anchor=(2.5, -0.1))
 
-# avg_label = ax.annotate(
-#     text='Expected\nfrequency',
-#     xy=(1/52, 18),
-#     xytext=(1/52*1.05, 20),
-#     arrowprops=dict(arrowstyle= '->', color='k', lw=2),
-#     ha='left', va='center'
-#     )
-# avg_label.remove()
-fig.savefig('../resources/flop-dist.png', bbox_inches='tight')
+
+# fig.savefig('../resources/flop-dist.png', bbox_inches='tight')
 
 
-# let's do a chi-squared test
+# chi-squared goodness of fit test
 cc['expected_freq'] = 1/52 * cc['freq'].sum()
-cc['O - E'] = cc['freq'] - cc['expected_freq']
-cc['(O - E)^2'] = cc['O - E'] * cc['O - E']
-cc['(O - E)^2 / E'] = cc['(O - E)^2'] / cc['expected_freq']
-chi_squared = cc['(O - E)^2 / E'].sum()
 
-"""
-null hypothesis: cards are dealt randomly
-alternative hypothesis: cards are not dealt randomly
+# individual card (52 categories)
+statistics, p_value = chisquare(cc['freq'], cc['expected_freq'])
+statistics, p_value
 
->>> chi_squared = cc['(O - E)^2 / E'].sum()
->>> chi_squared
->>> 64.20818955601564
+# >>>statistics, p_value
+# >>>(64.20818955601564, 0.10130584321971552)
 
->>> alpha = 0.05
->>> d_o_f = len(cc) - 1
->>> d_o_f
->>> 51
+# rank (13 categories)
+rank_freq = cc.groupby('rank')['freq'].sum()
+statistics, p_value = chisquare(rank_freq)
+statistics, p_value
 
-critical value at alpha = 0.05 and 51 degress of freedom = 68.66929391
-our chi_squared statistics = 64.20818955601564
-
-chi_squared < critical value
-we do not reject our null hypothesis
-the discrepancies are still due to random fluctuation!
-"""
+# suit (4 categories)
+suit_freq = cc.groupby('suit')['freq'].sum()
+statistics, p_value =chisquare(suit_freq)
+statistics, p_value
