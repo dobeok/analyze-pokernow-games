@@ -19,3 +19,6 @@ venv.bak/
 
 ignore-dir/
 .ipynb_checkpoints
+_*.py
+
+secrets/

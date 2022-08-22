@@ -6,7 +6,7 @@ df = df.drop('order', axis=1)
 
 # remove sensitive data
 df = df.drop(df.loc[df['entry'].str.startswith('Your hand is')].index)
-# in reality, I already ran `grep -v -i 'your hand is' 2021-11-13\ raw\ log.csv > "2021-11-13 raw log sanitized.csv"` on the real raw csv to hide my hand :P
+
 
 
 # PREPROCESS DATA
