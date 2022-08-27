@@ -81,7 +81,7 @@ df['rank-A2'] = df.loc[cond].groupby(['hand_id', 'phase', 'action'])['at'].rank(
 # rank within each individual
 df['rank-P0'] = df.loc[cond].groupby(['hand_id', 'phase','player_name'])['at'].rank() # to find position
 df['rank-P1'] = df.loc[cond].groupby(['hand_id', 'phase','player_name', 'action'])['at'].rank() # to find their first action
-df['rank-P2'] = df.loc[cond & (~df['action'].isin(['Dealer', 'big blind', 'small blind']))].groupby(['hand_id', 'phase','player_name', 'action'])['at'].rank() # to find their 1st action, exld involuntary
+df['rank-P2'] = df.loc[cond & (~df['action'].isin(['Dealer', 'Big blind', 'Small blind']))].groupby(['hand_id', 'phase','player_name', 'action'])['at'].rank() # to find their 1st action, exld involuntary
 
 
 # DETERMINE POSITION
